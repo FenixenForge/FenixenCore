@@ -12,8 +12,12 @@ public class Commands {
         Reflections reflections = new Reflections(packagePath);
         Set<Class<? extends AbstractCommandBuilder>> commandClasses = reflections.getSubTypesOf(AbstractCommandBuilder.class);
 
+        // Registrar comandos principales (excluyendo la propia clase base)
         for (Class<? extends AbstractCommandBuilder> clazz : commandClasses) {
-            if (Modifier.isAbstract(clazz.getModifiers()) || !MainCommandBuilder.class.isAssignableFrom(clazz)) {
+            if (Modifier.isAbstract(clazz.getModifiers()) || clazz.equals(MainCommandBuilder.class) || clazz.equals(SubCommandBuilder.class)) {
+                continue;
+            }
+            if (!MainCommandBuilder.class.isAssignableFrom(clazz)) {
                 continue;
             }
             try {
@@ -30,8 +34,12 @@ public class Commands {
             }
         }
 
+        // Registrar subcomandos
         for (Class<? extends AbstractCommandBuilder> clazz : commandClasses) {
-            if (Modifier.isAbstract(clazz.getModifiers()) || !SubCommandBuilder.class.isAssignableFrom(clazz)) {
+            if (Modifier.isAbstract(clazz.getModifiers()) || clazz.equals(MainCommandBuilder.class) || clazz.equals(SubCommandBuilder.class)) {
+                continue;
+            }
+            if (!SubCommandBuilder.class.isAssignableFrom(clazz)) {
                 continue;
             }
             try {
@@ -45,6 +53,7 @@ public class Commands {
                     plugin.getLogger().warning("El subcomando " + subCommand.name + " no tiene cadena de comando principal definida.");
                     continue;
                 }
+                // La cadena puede tener varios niveles, separados por espacios, por ejemplo "main sub1 sub2"
                 String[] parts = chain.split(" ");
                 MainCommandBuilder main = CommandsHolder.getMainCommand(parts[0]);
                 if (main == null) {

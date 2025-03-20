@@ -10,6 +10,10 @@ public class MainCommandBuilder extends AbstractCommandBuilder<MainCommandBuilde
     }
 
     public MainCommandBuilder register(JavaPlugin plugin) {
+        // Evitamos registrar la clase base
+        if (this.getClass().equals(MainCommandBuilder.class)) {
+            return this;
+        }
         PluginCommand pluginCommand = plugin.getCommand(name);
         if (pluginCommand == null) {
             plugin.getLogger().info("El comando '" + name + "' no está definido en plugin.yml. Se creará dinámicamente.");
