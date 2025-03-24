@@ -1,83 +1,121 @@
 package com.fenixenforge.FenixenCore.Handlers.Commands;
 
+import com.fenixenforge.FenixenCore.Utils.Messages;
+import java.lang.reflect.Modifier;
+import java.util.Set;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.reflections.Reflections;
 
-import java.lang.reflect.Modifier;
-import java.util.Set;
-
 public class Commands {
 
-    public static void RegisterAll(JavaPlugin plugin, String packagePath) {
-        Reflections reflections = new Reflections(packagePath);
-        Set<Class<? extends AbstractCommandBuilder>> commandClasses = reflections.getSubTypesOf(AbstractCommandBuilder.class);
+    public static void RegisterAll(JavaPlugin plugin, String Path, boolean debug) {
+        String path = plugin.getClass().getPackage().getName() + ".";
+        Reflections reflection = new Reflections(path + Path);
 
-        // Registrar comandos principales (excluyendo la propia clase base)
-        for (Class<? extends AbstractCommandBuilder> clazz : commandClasses) {
-            if (Modifier.isAbstract(clazz.getModifiers()) || clazz.equals(MainCommandBuilder.class) || clazz.equals(SubCommandBuilder.class)) {
+        if (debug) {
+            Messages.Console("&d" + plugin.getName() + "&a Cargando Comandos de " + path + Path);
+        }
+
+
+        Set<Class<? extends CBuilder>> CClasses = reflection.getSubTypesOf(CBuilder.class);
+
+        for (Class<? extends CBuilder> clazz : CClasses) {
+            if (Modifier.isAbstract(clazz.getModifiers()) || clazz.equals(MCBuilder.class) || clazz.equals(SCBuilder.class)) {
                 continue;
             }
-            if (!MainCommandBuilder.class.isAssignableFrom(clazz)) {
+
+            if (!MCBuilder.class.isAssignableFrom(clazz)) {
                 continue;
             }
+
             try {
-                MainCommandBuilder mainCommand = (MainCommandBuilder) clazz.getDeclaredConstructor().newInstance();
-                if (mainCommand.name == null) {
-                    plugin.getLogger().warning("La clase " + clazz.getName() + " no tiene nombre asignado. Se omitirá su registro.");
+
+                MCBuilder mCommand = (MCBuilder) clazz.getDeclaredConstructor().newInstance();
+
+                if (mCommand.getName()==null) {
+                    if (debug) {
+                        Messages.Console("&d" + plugin.getName() + "&c La clase " + clazz.getName() + " no tiene nombre asignado correctamente para un Comando Principal.");
+                    }
                     continue;
                 }
-                mainCommand.register(plugin);
-                plugin.getLogger().info("Registrado comando principal: " + mainCommand.name);
+                mCommand.register(plugin);
+                if (debug) {
+                    Messages.Console("&d" + plugin.getName() + "&a Registrando Comando principal: " + " ( " + mCommand.getName() + " )");
+                }
             } catch (Exception e) {
-                plugin.getLogger().severe("Error registrando comando principal: " + clazz.getName());
+                if (debug) {
+                    Messages.Console("&d" + plugin.getName() + "&c Error registrando comando principal: " + clazz.getName());
+                }
                 e.printStackTrace();
             }
         }
 
-        // Registrar subcomandos
-        for (Class<? extends AbstractCommandBuilder> clazz : commandClasses) {
-            if (Modifier.isAbstract(clazz.getModifiers()) || clazz.equals(MainCommandBuilder.class) || clazz.equals(SubCommandBuilder.class)) {
+        for (Class<? extends CBuilder> clazz : CClasses) {
+            if (Modifier.isAbstract(clazz.getModifiers()) || clazz.equals(MCBuilder.class) || clazz.equals(SCBuilder.class)) {
                 continue;
             }
-            if (!SubCommandBuilder.class.isAssignableFrom(clazz)) {
+
+            if (!SCBuilder.class.isAssignableFrom(clazz)) {
                 continue;
             }
+
             try {
-                SubCommandBuilder subCommand = (SubCommandBuilder) clazz.getDeclaredConstructor().newInstance();
-                if (subCommand.name == null) {
-                    plugin.getLogger().warning("La clase " + clazz.getName() + " no tiene nombre asignado. Se omitirá su registro.");
+                SCBuilder sCommand = (SCBuilder) clazz.getDeclaredConstructor().newInstance();
+                if (sCommand.name==null) {
+                    if (debug) {
+                        Messages.Console("&d" + plugin.getName() + "&c La clase " + clazz.getName() + " no tiene nombre asignado correctamente para un SubComando.");
+                    }
                     continue;
                 }
-                String chain = subCommand.getMainCommandChain();
-                if (chain == null || chain.isEmpty()) {
-                    plugin.getLogger().warning("El subcomando " + subCommand.name + " no tiene cadena de comando principal definida.");
-                    continue;
+
+                String chain = sCommand.getmCChain();
+
+                if (chain==null || chain.isEmpty()) {
+                    if (debug) {
+                        Messages.Console("&d" + plugin.getName() + "&c La clase " + clazz.getName() + " no tiene cadena de comando principal definida.");
+                    }
                 }
-                // La cadena puede tener varios niveles, separados por espacios, por ejemplo "main sub1 sub2"
+
                 String[] parts = chain.split(" ");
-                MainCommandBuilder main = CommandsHolder.getMainCommand(parts[0]);
-                if (main == null) {
-                    plugin.getLogger().severe("No se encontró el comando principal '" + parts[0] + "' para el subcomando " + subCommand.name);
+
+                MCBuilder main = CHolder.getMCommand(parts[0]);
+
+                if (main==null) {
+                    if (debug) {
+                        Messages.Console("&d" + plugin.getName() + "&c No se encontró el comando principal '" + parts[0] + "' para el subcomando " + sCommand.name);
+                    }
                     continue;
                 }
-                AbstractCommandBuilder<?> parent = main;
+
+                CBuilder<?> parent = main;
+
                 for (int i = 1; i < parts.length; i++) {
-                    if (parent.subcommands.containsKey(parts[i])) {
-                        parent = parent.subcommands.get(parts[i]);
+                    if (parent.subCommands.containsKey(parts[i])) {
+                        parent = parent.subCommands.get(parts[i]);
                     } else {
-                        plugin.getLogger().severe("No se encontró el subcomando '" + parts[i] + "' en la cadena '" + chain + "' para " + subCommand.name);
+                        if (debug) {
+                            Messages.Console("&d" + plugin.getName() + "&c No se encontró el subcomando '" + parts[i] + "' en la cadena '" + chain + "' para " + sCommand.name);
+                        }
                         parent = null;
                         break;
                     }
                 }
-                if (parent != null) {
-                    parent.addSubcommand(subCommand.name, subCommand);
-                    plugin.getLogger().info("Registrado subcomando: " + subCommand.name + " bajo la cadena '" + chain + "'");
+
+                if (parent!=null) {
+                    parent.addSubcommand(sCommand.name, sCommand);
+                    if (debug) {
+                        Messages.Console("&d" + plugin.getName() + "&a Registrando SubComando: " + " ( " + sCommand.name + " ) " + " bajo la cadena '" + chain + "'");
+                    }
                 }
+
+
             } catch (Exception e) {
-                plugin.getLogger().severe("Error registrando subcomando: " + clazz.getName());
+                if (debug) {
+                    Messages.Console("&d" + plugin.getName() + "&c Error registrando subcomando: " + clazz.getName());
+                }
                 e.printStackTrace();
             }
+
         }
     }
 }

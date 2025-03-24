@@ -1,35 +1,42 @@
 package com.fenixenforge.FenixenCore.Handlers.Events;
 
+import com.fenixenforge.FenixenCore.Utils.Messages;
+import java.lang.reflect.Modifier;
+import java.util.Set;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.reflections.Reflections;
 
-import java.lang.reflect.Modifier;
-import java.util.Set;
-
 public class Events {
 
-    public static EventHandlerBuilder event() {
-        return new EventHandlerBuilder();
+    public static EHandlerBuilder event() {
+        return new EHandlerBuilder();
     }
 
+    public static void RegisterAll(JavaPlugin
+                    plugin,
+            String Path, boolean debug) {
+        String path = plugin.getClass().getPackage().getName() + ".";
+        Reflections reflections = new Reflections(path + Path);
+        Set<Class<? extends EHandlerBuilder>> classes = reflections.getSubTypesOf(EHandlerBuilder.class);
 
-    public static void registerAll(JavaPlugin plugin, String packagePath) {
-        Reflections reflections = new Reflections(packagePath);
-        Set<Class<? extends EventHandlerBuilder>> classes = reflections.getSubTypesOf(EventHandlerBuilder.class);
-
-        for (Class<? extends EventHandlerBuilder> clazz : classes) {
+        for (Class<? extends EHandlerBuilder> clazz : classes) {
             if (Modifier.isAbstract(clazz.getModifiers())) {
                 continue;
             }
 
             try {
-                EventHandlerBuilder handler = clazz.getDeclaredConstructor().newInstance();
+                EHandlerBuilder handler = clazz.getDeclaredConstructor().newInstance();
                 handler.register(plugin);
-                plugin.getLogger().info("Registrado event handler: " + clazz.getSimpleName());
+                if (debug) {
+                    Messages.Console("&d" + plugin.getName() + "&b Registrado event handler: " + clazz.getSimpleName());
+                }
             } catch (Exception e) {
-                plugin.getLogger().severe("Error al registrar el event handler: " + clazz.getName());
+                if (debug) {
+                    Messages.Console("&d" + plugin.getName() + "&c Error al registrar el event handler: " + clazz.getName());
+                }
                 e.printStackTrace();
             }
         }
     }
 }
+
