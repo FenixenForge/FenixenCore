@@ -1,4 +1,4 @@
-package com.fenixenforge.FenixenCore.Handlers.Placeholders;
+package com.fenixenforge.Core.Handlers.Placeholders;
 
 import org.bukkit.entity.Player;
 

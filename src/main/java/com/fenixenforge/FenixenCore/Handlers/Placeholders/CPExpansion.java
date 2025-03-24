@@ -1,8 +1,9 @@
-package com.fenixenforge.FenixenCore.Handlers.Placeholders;
+package com.fenixenforge.Core.Handlers.Placeholders;
 
 import java.util.HashMap;
 import java.util.Map;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -30,6 +31,11 @@ public class CPExpansion extends PlaceholderExpansion {
 
     @Override public @NotNull String getVersion() {
         return plugin.getDescription().getVersion();
+    }
+
+    @Override
+    public String onRequest(OfflinePlayer player, @NotNull String params) {
+        return null;
     }
 
     @Override public @NotNull String onPlaceholderRequest(Player player, @NotNull String identifier) {

@@ -1,6 +1,6 @@
-package com.fenixenforge.FenixenCore.Handlers.Commands;
+package com.fenixenforge.Core.Handlers.Commands;
 
-import com.fenixenforge.FenixenCore.Utils.Messages;
+import com.fenixenforge.Core.Utils.Messages;
 import java.lang.reflect.Modifier;
 import java.util.Set;
 import org.bukkit.plugin.java.JavaPlugin;

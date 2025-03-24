@@ -1,4 +1,4 @@
-package com.fenixenforge.FenixenCore.Handlers.Items;
+package com.fenixenforge.Core.Handlers.Items;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,6 +1,6 @@
-package com.fenixenforge.FenixenCore.Handlers.Placeholders;
+package com.fenixenforge.Core.Handlers.Placeholders;
 
-import com.fenixenforge.FenixenCore.Utils.Messages;
+import com.fenixenforge.Core.Utils.Messages;
 import java.util.Set;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.reflections.Reflections;

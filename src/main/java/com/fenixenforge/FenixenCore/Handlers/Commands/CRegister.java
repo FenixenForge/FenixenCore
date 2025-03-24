@@ -1,4 +1,4 @@
-package com.fenixenforge.FenixenCore.Handlers.Commands;
+package com.fenixenforge.Core.Handlers.Commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;

@@ -1,4 +1,4 @@
-package com.fenixenforge.FenixenCore.Handlers.Inventory;
+package com.fenixenforge.Core.Handlers.Inventory;
 
 import java.util.HashMap;
 import java.util.Map;

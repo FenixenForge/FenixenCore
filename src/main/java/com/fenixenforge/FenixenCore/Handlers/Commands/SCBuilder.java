@@ -1,4 +1,4 @@
-package com.fenixenforge.FenixenCore.Handlers.Commands;
+package com.fenixenforge.Core.Handlers.Commands;
 
 public class SCBuilder extends CBuilder<SCBuilder> {
 
