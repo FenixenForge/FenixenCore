@@ -1,4 +1,4 @@
-package com.fenixenforge.Core.Handlers.Commands;
+package com.fenixenforge.FenixenCore.Handlers.Commands;
 
 import com.fenixenforge.Core.Utils.Messages;
 import java.lang.reflect.Modifier;

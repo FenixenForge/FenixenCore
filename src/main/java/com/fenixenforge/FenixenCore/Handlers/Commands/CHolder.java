@@ -1,4 +1,4 @@
-package com.fenixenforge.Core.Handlers.Commands;
+package com.fenixenforge.FenixenCore.Handlers.Commands;
 
 import java.util.HashMap;
 import java.util.Map;

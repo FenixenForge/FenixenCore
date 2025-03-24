@@ -1,4 +1,4 @@
-package com.fenixenforge.Core.Handlers.Yaml;
+package com.fenixenforge.FenixenCore.Handlers.Yaml;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

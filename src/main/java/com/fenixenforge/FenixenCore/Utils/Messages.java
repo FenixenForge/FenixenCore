@@ -1,14 +1,12 @@
 package com.fenixenforge.FenixenCore.Utils;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public class Messages {
-
     private static CommandSender sender;
 
     public static final Pattern HEX = Pattern.compile("#([A-Fa-f0-9]{6})");

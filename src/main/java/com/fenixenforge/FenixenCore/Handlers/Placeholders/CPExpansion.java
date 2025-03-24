@@ -1,4 +1,4 @@
-package com.fenixenforge.Core.Handlers.Placeholders;
+package com.fenixenforge.FenixenCore.Handlers.Placeholders;
 
 import java.util.HashMap;
 import java.util.Map;

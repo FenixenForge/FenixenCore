@@ -1,4 +1,4 @@
-package com.fenixenforge.Core.Handlers.Placeholders;
+package com.fenixenforge.FenixenCore.Handlers.Placeholders;
 
 import com.fenixenforge.Core.Utils.Messages;
 import java.util.Set;

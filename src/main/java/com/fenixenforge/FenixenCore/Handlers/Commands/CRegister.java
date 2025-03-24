@@ -1,11 +1,10 @@
-package com.fenixenforge.Core.Handlers.Commands;
+package com.fenixenforge.FenixenCore.Handlers.Commands;
 
+import java.lang.reflect.Field;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.lang.reflect.Field;
 
 public class CRegister {
     public static CommandMap getCommandMap() {

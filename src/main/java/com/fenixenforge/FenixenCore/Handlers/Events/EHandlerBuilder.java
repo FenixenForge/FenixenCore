@@ -1,4 +1,4 @@
-package com.fenixenforge.Core.Handlers.Events;
+package com.fenixenforge.FenixenCore.Handlers.Events;
 
 import java.util.function.Consumer;
 import org.bukkit.event.Event;

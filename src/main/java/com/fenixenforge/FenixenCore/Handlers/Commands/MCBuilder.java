@@ -1,4 +1,4 @@
-package com.fenixenforge.Core.Handlers.Commands;
+package com.fenixenforge.FenixenCore.Handlers.Commands;
 
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;

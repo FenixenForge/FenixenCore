@@ -1,9 +1,8 @@
-package com.fenixenforge.Core.Handlers.Commands;
-
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
+package com.fenixenforge.FenixenCore.Handlers.Commands;
 
 import java.util.List;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 
 public class DCommands extends Command {
 

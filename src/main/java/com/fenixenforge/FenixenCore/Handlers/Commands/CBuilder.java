@@ -1,14 +1,13 @@
-package com.fenixenforge.Core.Handlers.Commands;
-
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
+package com.fenixenforge.FenixenCore.Handlers.Commands;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 
 public abstract class CBuilder<T extends CBuilder<T>> implements CommandExecutor, TabCompleter {
 
