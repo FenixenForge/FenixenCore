@@ -46,7 +46,6 @@ public class EHandlerBuilder {
         Class<? extends Event> specificEventClass = eventClass;
 
         plugin.getServer().getPluginManager().registerEvent(specificEventClass, new Listener() {
-            // Implementamos el método de evento de manera genérica
             @SuppressWarnings("unchecked") public void onEvent(Event event) {
                 if (specificEventClass.isInstance(event)) {
                     executor.accept(event);
