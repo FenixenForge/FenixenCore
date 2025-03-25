@@ -28,7 +28,7 @@ Para comenzar a usar Fenixen Core en tu plugin de Bukkit/Spigot, agrega la depen
 <dependency>
 <groupId>com.github.FenixenForge</groupId>
 <artifactId>FenixenCore</artifactId>
-<version>2.0.1</version>
+<version>2.0.2</version>
 </dependency>
 ```
 
