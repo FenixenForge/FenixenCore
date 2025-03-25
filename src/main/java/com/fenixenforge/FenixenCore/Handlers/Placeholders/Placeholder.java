@@ -2,6 +2,9 @@ package com.fenixenforge.FenixenCore.Handlers.Placeholders;
 
 import com.fenixenforge.FenixenCore.Utils.Messages;
 import java.util.Set;
+import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.reflections.Reflections;
 
@@ -43,6 +46,16 @@ public class Placeholder {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static String Process(String message) {
+        if (message==null || message.isEmpty()) return "";
+
+        Player player = Bukkit.getOnlinePlayers().stream().findFirst().orElse(null);
+        if (player!=null) {
+            return PlaceholderAPI.setPlaceholders(player, message);
+        }
+        return message;
     }
 
 
