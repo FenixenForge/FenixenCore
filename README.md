@@ -1,5 +1,5 @@
 # Fenixen Core
-
+[![](https://jitpack.io/v/FenixenForge/FenixenCore.svg)](https://jitpack.io/#FenixenForge/FenixenCore)
 ## Introducción
 
 Fenixen Core es un framework basado en Bukkit que facilita la creación de plugins de Minecraft de manera rápida y sencilla. Proporciona herramientas para:
@@ -19,6 +19,7 @@ Para comenzar a usar Fenixen Core en tu plugin de Bukkit/Spigot, agrega la depen
 ```xml
 
 <repositories>
+    <repository>
     <repository>
         <id>jitpack.io</id>
         <url>https://jitpack.io</url>
