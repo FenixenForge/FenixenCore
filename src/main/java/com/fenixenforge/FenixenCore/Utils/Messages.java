@@ -3,6 +3,7 @@ package com.fenixenforge.FenixenCore.Utils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
