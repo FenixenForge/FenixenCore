@@ -1,5 +1,6 @@
 package com.fenixenforge.FenixenCore.Handlers.Commands;
 
+import com.fenixenforge.FenixenCore.Utils.Messages;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,7 @@ public abstract class CBuilder<T extends CBuilder<T>> implements CommandExecutor
     protected List<String> aliases = new ArrayList<>();
     protected final Map<String, CBuilder<?>> subCommands = new HashMap<>();
     protected CommandExecutor executor;
+    private String noPermissionMsg;
 
     @SuppressWarnings("unchecked") public T name(String name) {
         this.name = name;
@@ -46,20 +48,29 @@ public abstract class CBuilder<T extends CBuilder<T>> implements CommandExecutor
         return (T) this;
     }
 
-    @Override public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length > 0 && subCommands.containsKey(args[0])) {
-            return subCommands.get(args[0]).onCommand(sender, command, label, args);
+    @SuppressWarnings("unchecked") public T noPermissionMsg(String message) {
+        this.noPermissionMsg = message;
+        return (T) this;
+
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+
+        if (this.permission!=null && !this.permission.isEmpty() && !sender.hasPermission(this.permission)) {
+            Messages.Sender(this.noPermissionMsg);
+            return true;
         }
 
-        if (executor != null) {
-            return executor.onCommand(sender, command, label, args);
+        if (args.length > 0 && this.subCommands.containsKey(args[0])) {
+            return this.subCommands.get(args[0]).onCommand(sender, command, label, args);
         }
 
-        return false;
+        return this.executor!=null ? this.executor.onCommand(sender, command, label, args):false;
     }
 
     @Override public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length == 1) {
+        if (args.length==1) {
             return new ArrayList<>(subCommands.keySet());
         }
 
