@@ -1,6 +1,5 @@
 package com.fenixenforge.FenixenCore.Handlers.Commands;
 
-import com.fenixenforge.FenixenCore.Utils.Messages;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,10 +23,6 @@ public abstract class CBuilder<T extends CBuilder<T>> implements CommandExecutor
         return (T) this;
     }
 
-    @SuppressWarnings("unchecked") public T permission(String permission) {
-        this.permission = permission;
-        return (T) this;
-    }
 
     @SuppressWarnings("unchecked") public T aliases(String... aliases) {
         this.aliases.addAll(List.of(aliases));
@@ -48,40 +43,14 @@ public abstract class CBuilder<T extends CBuilder<T>> implements CommandExecutor
         return (T) this;
     }
 
-    @SuppressWarnings("unchecked") public T noPermissionMsg(String message) {
-        this.noPermissionMsg = message;
-        return (T) this;
 
-    }
-
-    @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        // Verificar si es un subcomando
         if (args.length > 0 && this.subCommands.containsKey(args[0])) {
-            CBuilder<?> subCommand = this.subCommands.get(args[0]);
-
-            // Verificar permisos del subcomando
-            if (subCommand.permission!=null && !subCommand.permission.isEmpty() && !sender.hasPermission(subCommand.permission)) {
-                Messages.setSender(sender);
-                Messages.Sender(subCommand.noPermissionMsg!=null ? subCommand.noPermissionMsg:"No tienes permiso para usar este subcomando.");
-                return true;
-            }
-
-            // Delegar la ejecución al subcomando
-            return subCommand.onCommand(sender, command, label, args);
+            return ((CBuilder) this.subCommands.get(args[0])).onCommand(sender, command, label, args);
+        } else {
+            return this.executor!=null ? this.executor.onCommand(sender, command, label, args):false;
         }
-
-        // Si no es un subcomando, verificar permisos del comando principal
-        if (this.permission!=null && !this.permission.isEmpty() && !sender.hasPermission(this.permission)) {
-            Messages.setSender(sender);
-            Messages.Sender(this.noPermissionMsg!=null ? this.noPermissionMsg:"No tienes permiso para usar este comando.");
-            return true;
-        }
-
-        // Ejecutar el comando principal si tiene executor asignado
-        return this.executor!=null ? this.executor.onCommand(sender, command, label, args):false;
     }
-
 
     @Override public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         if (args.length==1) {
